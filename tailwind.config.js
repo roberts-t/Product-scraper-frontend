@@ -24,7 +24,7 @@ module.exports = {
                 'neutral': '#f3f2f8',
             },
             backgroundImage: {
-                'hero-home': "url('assets/images/home-hero.jpg')",
+                'login': "url('assets/images/login-hero.jpg')",
             },
         },
     },

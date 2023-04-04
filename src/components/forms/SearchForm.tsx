@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import * as Yup from 'yup';
 import { FormikForm } from '../FormikForm';
 import { Field, FormikHelpers, useFormikContext } from 'formik';
 import { ImSearch } from 'react-icons/im';
 import axios from 'axios';
+import { AuthContext } from '../../context/AuthContext';
 
 export const SearchForm: React.FC<SearchFormProps> = (props) => {
+    const { checkToken } = useContext(AuthContext);
     // TODO: Remove hardcoded localhost link
 
     const initialValues = {
@@ -22,11 +24,14 @@ export const SearchForm: React.FC<SearchFormProps> = (props) => {
         if (props.isLoading) {
             return;
         }
+        if (checkToken) {
+            await checkToken();
+        }
         props.setProducts([]);
         props.setIsLoading(true);
 
         axios.post(`http://localhost:5000/api/products`, {
-            sites: ['rimi', 'barbora', 'top', 'NuKo', 'lats'],
+            sites: ['rimi', 'barbora', 'top', 'nuko', 'lats'],
             query: values.query
         }).then((res) => {
             props.setProducts(res.data);

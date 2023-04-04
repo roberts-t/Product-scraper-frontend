@@ -6,6 +6,9 @@ export const FormField: React.FC<FormFieldProps> = (props) => {
 
     return (
         <>
+            <label htmlFor={props.name} className={props.labelClassName}>
+                {props.label}
+            </label>
             <input {...field} {...props} />
             {meta.touched && meta.error ? (
                 <div className="text-red-500 mt-0.5">{meta.error}</div>
@@ -19,4 +22,6 @@ interface FormFieldProps {
     type: string;
     placeholder?: string;
     className?: string;
+    labelClassName?: string;
+    label?: string;
 }

@@ -4,6 +4,7 @@ import ShoppingCart from '../assets/images/search-products.png';
 import { SearchForm } from '../components/forms/SearchForm';
 import { ProductCard } from '../components/ProductCard';
 import { CgSpinner } from 'react-icons/cg';
+import { Container } from '../components/Container';
 
 export const Search = () => {
 
@@ -48,7 +49,7 @@ export const Search = () => {
                     </div>
                     <div className="flex flex-row gap-x-5">
 
-                        <div className="grid lg:grid-cols-4 grid-cols-3 gap-6">
+                        <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
                             {productCards}
                         </div>
                     </div>
@@ -59,7 +60,7 @@ export const Search = () => {
 
     return (
         <Page>
-            <div className="container mx-auto px-32 py-10">
+            <Container className="py-10">
                 <h1 className="font-rubik text-3xl font-bold text-slate-700 py-3">Produktu meklēšana</h1>
                 <p className="text-lg text-gray-500">Meklē izdevīgākos produktus no pārtikas veikaliem kā
                     <span className="text-primary font-semibold"> Rimi</span>,
@@ -67,7 +68,7 @@ export const Search = () => {
                     <span className="text-primary font-semibold"> Top! </span>
                     un citiem.
                 </p>
-                <div className="bg-white rounded-md shadow-sm w-5/12 mt-3 flex p-5 border border-gray-200">
+                <div className="bg-white rounded-md shadow-sm lg:w-5/12 md:w-8/12 sm:w-10/12 w-full mt-3 flex p-5 border border-gray-200">
                     <SearchForm
                         setQuery={setQuery}
                         setProducts={setProductsSorted}
@@ -76,11 +77,11 @@ export const Search = () => {
                         isLoading={isLoading}
                     />
                 </div>
-            </div>
+            </Container>
             <div className="bg-white flex-1">
-                <div className="container mx-auto px-32 py-10">
+                <Container className="py-10">
                     {renderProducts()}
-                </div>
+                </Container>
             </div>
 
         </Page>
