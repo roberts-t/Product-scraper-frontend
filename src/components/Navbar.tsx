@@ -1,13 +1,21 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { ReactComponent as Logo } from '../assets/vectors/logo.svg';
 import { Container } from './Container';
-import { Link } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import { Link, useNavigate } from 'react-router-dom';
 import { BiLogOut } from 'react-icons/bi';
+import { logout } from '../features/auth/authSlice';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../app/store';
 
 export const Navbar = () => {
 
-    const { logout } = useContext(AuthContext);
+    const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        dispatch(logout());
+        navigate('/');
+    }
 
     return (
         <nav className="w-full h-16 bg-white shadow border-secondary py-3">
@@ -39,7 +47,7 @@ export const Navbar = () => {
                     </div>
                     <div>
                         <button
-                            onClick={logout}
+                            onClick={handleLogout}
                             type="button"
                             className="flex flex-row items-center gap-x-1 text-slate-700"
                         >

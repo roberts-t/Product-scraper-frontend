@@ -2,10 +2,11 @@ import axios from 'axios';
 import { IDecodedToken } from '../types';
 import jwtDecode from 'jwt-decode';
 import { refreshToken } from '../features/auth/authSlice';
-const { store } = require('../app/store');
+import { store } from '../app/store';
 
 export const requestPublic = axios.create({
-    baseURL: process.env.REACT_APP_API_URL
+    baseURL: process.env.REACT_APP_API_URL,
+    withCredentials: true,
 });
 
 export const requestPrivate = axios.create({
@@ -15,14 +16,14 @@ export const requestPrivate = axios.create({
 
 requestPrivate.interceptors.request.use(
     async (config) => {
-        const user = store?.getState()?.auth?.user;
-
+        const user = store?.getState()?.auth?.accessToken;
         if (user) {
             const decodedToken: IDecodedToken = jwtDecode(user);
+            console.log(decodedToken.exp * 1000);
             if (decodedToken.exp * 1000 < Date.now()) {
                 await store.dispatch(refreshToken());
             }
-            config.headers.Authorization = `Bearer ${user.accessToken}`;
+            config.headers.Authorization = `Bearer ${store?.getState()?.auth?.accessToken}`;
         }
         return config;
     },

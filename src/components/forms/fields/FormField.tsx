@@ -24,4 +24,5 @@ interface FormFieldProps {
     className?: string;
     labelClassName?: string;
     label?: string;
+    autoComplete?: string;
 }

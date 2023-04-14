@@ -15,7 +15,7 @@ export const logout = async () => {
 }
 
 const refreshToken = async () => {
-    const response = await requestPrivate.post('/access/refresh');
+    const response = await requestPublic.post('/access/refresh');
 
     return response.data.token;
 }

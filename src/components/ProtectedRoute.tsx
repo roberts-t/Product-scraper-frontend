@@ -1,10 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import { useSelector } from 'react-redux';
+import { IState } from '../types';
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({children}) => {
 
-    const { accessToken, isLoading } = useContext(AuthContext);
+    const { accessToken, isLoading } = useSelector((state: IState) => state.auth);
 
     if (isLoading) {
         return <div>Loading...</div>;

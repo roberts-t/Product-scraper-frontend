@@ -9,6 +9,7 @@ const initialState: AuthState = {
     accessToken: accessToken,
     errorMsg: null,
     isLoading: false,
+    isRefreshing: false,
 }
 
 export const login = createAsyncThunk('auth/register', async (accessCode: string, thunkAPI) => {
@@ -86,15 +87,15 @@ export const authSlice = createSlice({
             state.errorMsg = action.payload as string;
         });
         builder.addCase(refreshToken.pending, (state) => {
-            state.isLoading = true;
+            state.isRefreshing = true;
         });
         builder.addCase(refreshToken.fulfilled, (state, action) => {
-            state.isLoading = false;
+            state.isRefreshing = false;
             state.accessToken = action.payload;
             localStorage.setItem('user', JSON.stringify(action.payload));
         });
         builder.addCase(refreshToken.rejected, (state) => {
-            state.isLoading = false;
+            state.isRefreshing = false;
             state.accessToken = null;
             localStorage.removeItem('user');
         });
