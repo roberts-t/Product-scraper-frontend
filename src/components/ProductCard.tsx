@@ -7,7 +7,7 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
         <div className="border-2 border-primary rounded p-3 shadow">
             <div className="flex flex-col h-full">
                 <div className="h-6 mb-2">
-                    <img src={`http://localhost:5000/images/stores/${props.product.site}-logo.png`} className="h-full" alt={props.product.site + " logo"} />
+                    <img src={`${process.env.REACT_APP_API_ORIGIN}images/stores/${props.product.site}.png`} className="h-full" alt={props.product.site + " logo"} />
                 </div>
                 <div className="h-32 mb-2">
                     <img src={props.product.image} className="h-full mx-auto" alt="Product" />

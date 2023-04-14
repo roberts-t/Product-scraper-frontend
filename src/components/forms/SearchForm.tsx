@@ -30,8 +30,8 @@ export const SearchForm: React.FC<SearchFormProps> = (props) => {
         props.setProducts([]);
         props.setIsLoading(true);
 
-        axios.post(`http://localhost:5000/api/products`, {
-            sites: ['rimi', 'barbora', 'top', 'nuko', 'lats'],
+        axios.post(`${process.env.REACT_APP_API_URL}products`, {
+            sites: ['rimi', 'barbora', 'top', 'nuko', 'lats', 'pienaveikals'],
             query: values.query
         }).then((res) => {
             props.setProducts(res.data);

@@ -65,7 +65,7 @@ const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({ children }
             return;
         }
         try {
-            const response = await axios.post('http://localhost:5000/api/access/refresh',{}, {withCredentials: true});
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}access/refresh`,{}, {withCredentials: true});
             if (response.data?.token) {
                 updateAccessToken(response.data.token);
             } else {
@@ -79,7 +79,7 @@ const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({ children }
     }
 
     const login = (code: string, setError: (error: string) => void) => {
-        axios.post(`http://localhost:5000/api/access`, {
+        axios.post(`${process.env.REACT_APP_API_URL}access`, {
             token: code
         }, {
             withCredentials: true
@@ -104,7 +104,7 @@ const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({ children }
     };
 
     const logout = () => {
-        axios.post(`http://localhost:5000/api/access/logout`, {}, {
+        axios.post(`${process.env.REACT_APP_API_URL}access/logout`, {}, {
             withCredentials: true
         }).then(() => {
             updateAccessToken('');
