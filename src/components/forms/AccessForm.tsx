@@ -4,6 +4,7 @@ import { FormikForm } from '../FormikForm';
 import { FormField } from './fields/FormField';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../features/auth/authSlice';
+import { resetProducts } from '../../features/products/productsSlice';
 import { AppDispatch } from '../../app/store';
 import { IState } from '../../types';
 import { CgSpinner } from 'react-icons/cg';
@@ -34,7 +35,8 @@ const AccessForm = () => {
 
     const onSubmit = async (values: any) => {
         if (isLoading) return;
-        await dispatch(login(values.code));
+        dispatch(login(values.code));
+        dispatch(resetProducts());
     }
 
     const getAndSetError = (error: string) => {

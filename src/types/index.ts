@@ -5,6 +5,16 @@ export interface AuthState {
     isRefreshing: boolean;
 }
 
+export interface ProductsState {
+    products: IProduct[];
+    productsSorted: IProduct[];
+    isLoading: boolean;
+    query: string | null;
+    isSearched: boolean;
+    errorMsg: string | null;
+    sortType: keyof IProductSortTypes;
+}
+
 export interface IDecodedToken {
     exp: number;
     iat: number;
@@ -13,4 +23,29 @@ export interface IDecodedToken {
 
 export interface IState {
     auth: AuthState;
+    products: ProductsState;
+}
+
+export interface IProduct {
+    site?: string;
+    name?: string;
+    price?: string | number;
+    image?: string;
+    url?: string;
+    currency?: string;
+    available?: boolean;
+    description?: string;
+    brand?: string;
+    country?: string;
+    manufacturer?: string;
+    amount?: string;
+    dealDuration?: string;
+}
+
+export interface IProductSortTypes {
+    priceAsc: string;
+    priceDesc: string;
+    nameAsc: string;
+    nameDesc: string;
+    relevance: string;
 }

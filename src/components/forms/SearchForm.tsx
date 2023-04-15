@@ -3,9 +3,15 @@ import * as Yup from 'yup';
 import { FormikForm } from '../FormikForm';
 import { Field, FormikHelpers, useFormikContext } from 'formik';
 import { ImSearch } from 'react-icons/im';
-import { requestPrivate } from '../../utils/request';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch } from '../../app/store';
+import { searchProducts } from '../../features/products/productsSlice';
+import { IState } from '../../types';
 
-export const SearchForm: React.FC<SearchFormProps> = (props) => {
+export const SearchForm = () => {
+
+    const dispatch = useDispatch<AppDispatch>();
+    const { isLoading } = useSelector((state: IState) => state.products);
 
     const initialValues = {
         query: ''
@@ -18,26 +24,9 @@ export const SearchForm: React.FC<SearchFormProps> = (props) => {
     };
 
     const onSubmit = async (values: ISearchFormValues, actions: FormikHelpers<ISearchFormValues>) => {
-        if (props.isLoading) {
-            return;
-        }
-        props.setProducts([]);
-        props.setIsLoading(true);
-
-        requestPrivate.post('/products', {
-            sites: ['rimi', 'barbora', 'top', 'nuko', 'lats', 'pienaveikals'],
-            query: values.query
-        }).then((res) => {
-            props.setProducts(res.data);
-            props.setIsLoading(false);
-            props.setSearched(true);
-            props.setQuery(values.query);
-            actions.setSubmitting(false);
-        }).catch((err) => {
-            console.log(err);
-            props.setIsLoading(false);
-            actions.setSubmitting(false);
-        });
+        if (isLoading) return;
+        await dispatch(searchProducts(values.query));
+        actions.setSubmitting(false);
     };
 
     return (
@@ -80,14 +69,6 @@ const SearchFormBody = () => {
         </>
     );
 };
-
-interface SearchFormProps {
-    setProducts: (products: any[]) => void;
-    setIsLoading: (isLoading: boolean) => void;
-    setSearched: (searched: boolean) => void;
-    setQuery: (query: string) => void;
-    isLoading: boolean;
-}
 
 interface ISearchFormValues {
     query: string;

@@ -19,7 +19,6 @@ requestPrivate.interceptors.request.use(
         const user = store?.getState()?.auth?.accessToken;
         if (user) {
             const decodedToken: IDecodedToken = jwtDecode(user);
-            console.log(decodedToken.exp * 1000);
             if (decodedToken.exp * 1000 < Date.now()) {
                 await store.dispatch(refreshToken());
             }

@@ -1,24 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { Page } from '../components/Page';
 import ShoppingCart from '../assets/images/search-products.png';
+import ProductsNotFound from '../assets/images/search-notfound.png';
 import { SearchForm } from '../components/forms/SearchForm';
 import { ProductCard } from '../components/ProductCard';
 import { CgSpinner } from 'react-icons/cg';
 import { Container } from '../components/Container';
+import { useSelector } from 'react-redux';
+import { IState } from '../types';
+import { Slide, toast, ToastContainer } from 'react-toastify';
+import { ProductSortDropdown } from '../components/dropdowns/ProductSortDropdown';
 
 export const Search = () => {
 
-    const [products, setProducts] = useState([] as any[]);
-    const [query, setQuery] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [isSearched, setIsSearched] = useState(false);
+    const { productsSorted, isLoading, query, isSearched, errorMsg } = useSelector((state: IState) => state.products);
 
-    const setProductsSorted = (products: any[]) => {
-        const sortedProducts = products.sort((a, b) => {
-            return a.price - b.price;
-        });
-        setProducts(sortedProducts);
-    }
+    useEffect(() => {
+        if (errorMsg) {
+            toast.error("Notika kļūda, mēģiniet vēlreiz");
+        }
+    }, [errorMsg]);
 
     const renderProducts = () => {
         if (!isSearched && !isLoading) {
@@ -37,21 +38,28 @@ export const Search = () => {
                     <p className="text-primary mb-1">Tiek meklēti izdevīgākie produkti no vairākiem e-veikaliem</p>
                 </div>
             )
-        } else if (products.length > 0) {
-            const productCards = products.map((product, i) => {
+        } else if (productsSorted.length >= 0) {
+            const productCards = productsSorted.map((product, i) => {
                 return <ProductCard key={i} product={product} />
             });
             return (
                 <div>
                     <div className="font-sans mb-5">
                         <p className="text-xl leading-none">Rezultāti meklēšanai: "<span className="text-primary font-semibold">{query}</span>"</p>
-                        <p className="text-gray-500">Atrasti <span className="font-semibold">{products.length}</span> produkti</p>
+                        <p className="text-gray-500">Atrasti <span className="font-semibold">{productsSorted.length}</span> produkti</p>
                     </div>
                     <div className="flex flex-row gap-x-5">
-
-                        <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
-                            {productCards}
-                        </div>
+                        {productsSorted.length > 0 ?
+                            <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
+                                {productCards}
+                            </div>
+                            :
+                            <div className="mx-auto mt-5 text-center">
+                                <h2 className="text-slate-800 text-xl font-rubik">Diemžēl netika atrasts neviens produkts</h2>
+                                <p className="text-gray-600">Pamēģiniet atrast citu produktu</p>
+                                <img src={ProductsNotFound} alt="Shopping Cart" className="w-80 mx-auto" />
+                            </div>
+                        }
                     </div>
                 </div>
             );
@@ -69,13 +77,12 @@ export const Search = () => {
                     un citiem.
                 </p>
                 <div className="bg-white rounded-md shadow-sm lg:w-5/12 md:w-8/12 sm:w-10/12 w-full mt-3 flex p-5 border border-gray-200">
-                    <SearchForm
-                        setQuery={setQuery}
-                        setProducts={setProductsSorted}
-                        setIsLoading={setIsLoading}
-                        setSearched={setIsSearched}
-                        isLoading={isLoading}
-                    />
+                    <SearchForm />
+                </div>
+                <div className="mt-3">
+                    {productsSorted.length > 1 &&
+                        <ProductSortDropdown />
+                    }
                 </div>
             </Container>
             <div className="bg-white flex-1">
@@ -83,7 +90,11 @@ export const Search = () => {
                     {renderProducts()}
                 </Container>
             </div>
-
+            <ToastContainer
+                position="bottom-right"
+                pauseOnHover
+                transition={Slide}
+            />
         </Page>
     );
 };

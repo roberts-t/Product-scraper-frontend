@@ -1,7 +1,6 @@
 import React from 'react';
 import { BiCart } from 'react-icons/bi';
 
-// TODO: Remove hardcoded localhost link
 export const ProductCard: React.FC<ProductCardProps> = (props) => {
     return (
         <div className="border-2 border-primary rounded p-3 shadow">
@@ -16,8 +15,12 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                     <p className="font-medium text-center font-montserrat">{props.product.name}</p>
                     <div className="mt-3 flex flex-row justify-between">
 
-                        <p className="text-primary font-bold font-montserrat text-2xl">{props.product.price}<span>€</span></p>
-                        <a href={props.product.url} target="_blank" className="bg-primary rounded p-2 w-fit" rel="noreferrer">
+                        {props.product.available ?
+                            <p className="text-primary font-bold font-montserrat text-2xl">{props.product.price}<span>€</span></p>
+                            :
+                            <p className="text-red-500 font-semibold font-montserrat leading-none text-center my-auto">Šobrīd nav pieejams</p>
+                        }
+                        <a href={props.product.url} target="_blank" className={`${props.product.available ? 'bg-primary' : 'bg-red-400'} rounded p-2 w-fit`} rel="noreferrer">
                             <BiCart className="text-white text-xl" />
                         </a>
                     </div>
