@@ -9,6 +9,7 @@ import { Container } from '../components/Container';
 import { useSelector } from 'react-redux';
 import { IState } from '../types';
 import { Slide, toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { ProductSortDropdown } from '../components/dropdowns/ProductSortDropdown';
 
 export const Search = () => {

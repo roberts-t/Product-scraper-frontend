@@ -3,7 +3,7 @@ import { IProduct, IProductSortTypes } from '../../types';
 
 export const searchProducts = async (query: string) => {
     const response = await requestPrivate.post('/products/', {
-        sites: ['rimi', 'barbora', 'top', 'nuko', 'lats', 'pienaveikals'],
+        sites: ['rimi', 'barbora', 'top', 'nuko', 'lats', 'pienaveikals', 'orkla'],
         query: query
     });
 
