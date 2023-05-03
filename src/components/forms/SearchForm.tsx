@@ -8,7 +8,7 @@ import { AppDispatch } from '../../app/store';
 import { searchProducts } from '../../features/products/productsSlice';
 import { IState } from '../../types';
 
-export const SearchForm = () => {
+export const SearchForm: React.FC<ISearchFormProps> = ({ resetPagination }) => {
 
     const dispatch = useDispatch<AppDispatch>();
     const { isLoading } = useSelector((state: IState) => state.products);
@@ -25,7 +25,8 @@ export const SearchForm = () => {
 
     const onSubmit = async (values: ISearchFormValues, actions: FormikHelpers<ISearchFormValues>) => {
         if (isLoading) return;
-        await dispatch(searchProducts(values.query));
+        resetPagination();
+        await dispatch(searchProducts({query: values.query, updateProducts: false}));
         actions.setSubmitting(false);
     };
 
@@ -69,6 +70,10 @@ const SearchFormBody = () => {
         </>
     );
 };
+
+interface ISearchFormProps {
+    resetPagination: () => void;
+}
 
 interface ISearchFormValues {
     query: string;

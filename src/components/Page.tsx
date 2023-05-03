@@ -1,5 +1,6 @@
 import React from 'react';
 import { Navbar } from './Navbar';
+import Footer from './Footer';
 
 export const Page = ({ children }: PageProps) => {
     return (
@@ -8,6 +9,7 @@ export const Page = ({ children }: PageProps) => {
             <div className="w-full bg-neutral flex-1 flex flex-col">
                 {children}
             </div>
+            <Footer />
         </div>
     );
 };

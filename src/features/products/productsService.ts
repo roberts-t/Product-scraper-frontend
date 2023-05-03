@@ -1,10 +1,10 @@
 import { requestPrivate } from '../../utils/request';
 import { IProduct, IProductSortTypes } from '../../types';
 
-export const searchProducts = async (query: string) => {
+export const searchProducts = async (query: string, updated: boolean = false) => {
     const response = await requestPrivate.post('/products/', {
-        sites: ['rimi', 'barbora', 'top', 'nuko', 'lats', 'pienaveikals', 'orkla'],
-        query: query
+        query: query,
+        updated: updated
     });
 
     return response.data;

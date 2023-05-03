@@ -1,30 +1,61 @@
 import React from 'react';
-import { BiCart } from 'react-icons/bi';
+import moment from 'moment';
+import 'moment/locale/lv';
+import { ProductHistoryModal } from './ProductHistoryModal';
 
 export const ProductCard: React.FC<ProductCardProps> = (props) => {
-    return (
-        <div className="border-2 border-primary rounded p-3 shadow">
-            <div className="flex flex-col h-full">
-                <div className="h-6 mb-2">
-                    <img src={`${process.env.REACT_APP_API_ORIGIN}images/stores/${props.product.site}.png`} className="h-full" alt={props.product.site + " logo"} />
-                </div>
-                <div className="h-32 mb-2">
-                    <img src={props.product.image} className="h-full mx-auto" alt="Product" />
-                </div>
-                <div className="flex flex-col justify-between flex-1">
-                    <p className="font-medium text-center font-montserrat">{props.product.name}</p>
-                    <div className="mt-3 flex flex-row justify-between">
+    moment().locale('lv');
 
-                        {props.product.available ?
-                            <p className="text-primary font-bold font-montserrat text-2xl">{props.product.price}<span>€</span></p>
-                            :
-                            <p className="text-red-500 font-semibold font-montserrat leading-none text-center my-auto">Šobrīd nav pieejams</p>
-                        }
-                        <a href={props.product.url} target="_blank" className={`${props.product.available ? 'bg-primary' : 'bg-red-400'} rounded p-2 w-fit`} rel="noreferrer">
-                            <BiCart className="text-white text-xl" />
-                        </a>
+    return (
+        <div className="border-2 border-primary rounded shadow">
+            <div className="flex flex-col h-full">
+                <div className="px-3 py-2.5 mb-2 flex justify-between flex-row">
+                    <a href={props.product.siteUrl} target="_blank" rel="noreferrer">
+                        <div className="h-6">
+                            <img src={`${process.env.REACT_APP_API_ORIGIN}images/stores/${props.product.siteLogo}`} className="h-full" alt={props.product.site + " logo"} />
+                        </div>
+                    </a>
+                    <a href={props.product.siteUrl} target="_blank" rel="noreferrer">
+                        <div className="bg-primary text-white py-0.5 font-semibold px-3 rounded text-sm">
+                            {props.product.siteName}
+                        </div>
+                    </a>
+                </div>
+                <a href={props.product.url} target="_blank" rel="noreferrer">
+                    <div className="h-32 mb-2 px-3">
+                        <img src={props.product.image} className="h-full mx-auto" alt={props.product.name} />
+                    </div>
+                </a>
+                <div className="flex flex-col justify-between flex-1 px-4">
+                    <a href={props.product.url} target="_blank" rel="noreferrer">
+                        <p className="font-medium text-center font-montserrat font-semibold ">{props.product.name}</p>
+                    </a>
+                    <div className="mt-3">
+                        <div className="text-gray-400 text-sm my-1 flex flex-col mb-3">
+                            {props.product.dealDuration &&
+                                <p>Cena spēkā: {props.product.dealDuration}</p>
+                            }
+                            {props.product.manufacturer &&
+                                <p>Ražotājs: {props.product.manufacturer}</p>
+                            }
+                            {props.product.country &&
+                                <p>Ražots: {props.product.country}</p>
+                            }
+                        </div>
+                        <div className="flex flex-row justify-between">
+                            {props.product.available ?
+                                <p className="text-primary font-bold font-montserrat text-2xl">{props.product.price}<span>€</span></p>
+                                :
+                                <p className="text-red-500 font-semibold font-montserrat leading-none text-center my-auto">Šobrīd nav pieejams</p>
+                            }
+                            <ProductHistoryModal product={props.product} />
+                        </div>
+                        {/*<a href={props.product.url} target="_blank" className={`${props.product.available ? 'bg-primary' : 'bg-red-400'} rounded p-2 w-fit`} rel="noreferrer">*/}
+                        {/*    <BiCart className="text-white text-xl" />*/}
+                        {/*</a>*/}
                     </div>
                 </div>
+                <div className="text-sm text-gray-400 px-3 pb-3">Atjaunots {moment(props.product.createdAt).fromNow()}</div>
             </div>
         </div>
     );

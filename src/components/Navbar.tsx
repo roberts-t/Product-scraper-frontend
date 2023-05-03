@@ -23,7 +23,7 @@ export const Navbar = () => {
                 <div className="flex flex-row justify-between items-center">
                     <div className="flex flex-row">
                         <div className="flex flex-row items-center gap-x-2">
-                            <Logo className="h-10 w-auto" />
+                            <Logo className="h-10 w-auto fill-primary" />
                             <p className="font-bold font-rubik text-2xl text-primary mt-1">AtrodiLētāk</p>
                         </div>
                         <div className="ml-14 sm:block hidden">

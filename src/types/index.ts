@@ -10,6 +10,7 @@ export interface ProductsState {
     productsSorted: IProduct[];
     isLoading: boolean;
     query: string | null;
+    updateAvailable: boolean;
     isSearched: boolean;
     errorMsg: string | null;
     sortType: keyof IProductSortTypes;
@@ -48,4 +49,9 @@ export interface IProductSortTypes {
     nameAsc: string;
     nameDesc: string;
     relevance: string;
+}
+
+export interface IProductSearch {
+    query: string;
+    updateProducts: boolean;
 }

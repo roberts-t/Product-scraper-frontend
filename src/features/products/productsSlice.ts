@@ -1,7 +1,7 @@
-import { createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import productsService from './productsService';
-import { ProductsState } from '../../types';
+import { IProductSearch, ProductsState } from '../../types';
 
 const initialState: ProductsState = {
     products: [],
@@ -10,12 +10,14 @@ const initialState: ProductsState = {
     query: null,
     isSearched: false,
     errorMsg: null,
+    updateAvailable: false,
     sortType: "priceAsc"
 }
 
-export const searchProducts = createAsyncThunk('products/searchProducts', async (query: string, thunkAPI) => {
+export const searchProducts = createAsyncThunk('products/searchProducts', async (searchData: IProductSearch, thunkAPI) => {
     try {
-        return await productsService.searchProducts(query);
+        const { query, updateProducts } = searchData;
+        return await productsService.searchProducts(query, updateProducts);
     } catch (err) {
         if (axios.isAxiosError(err)) {
             const message = err?.response?.data?.errorMsg || "Something went wrong, try again later!";
@@ -41,15 +43,21 @@ export const productsSlice = createSlice({
         builder.addCase(searchProducts.pending, (state) => {
             state.isLoading = true;
             state.errorMsg = null;
+            state.updateAvailable = false;
         });
         builder.addCase(searchProducts.fulfilled, (state, action) => {
             state.isLoading = false;
             state.errorMsg = null;
-            state.products = action.payload;
-            state.productsSorted = action.payload;
+            state.products = action.payload.products;
+            state.productsSorted = action.payload.products;
+            state.updateAvailable = action.payload.updateAvailable;
             state.isSearched = true;
-            state.query = action.meta.arg;
-            state.productsSorted = productsService.sortProducts([...action.payload], 'priceAsc', state.query);
+            state.query = action.meta.arg.query;
+            if (action.payload.products && Array.isArray(action.payload.products)) {
+                state.productsSorted = productsService.sortProducts([...action.payload.products], 'priceAsc', state.query);
+            } else {
+                state.productsSorted = [];
+            }
         });
         builder.addCase(searchProducts.rejected, (state, action) => {
             state.isLoading = false;

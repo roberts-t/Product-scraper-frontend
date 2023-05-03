@@ -2,6 +2,11 @@ import React from 'react';
 import { Page } from '../components/Page';
 import shoppingCartHero from '../assets/images/shopping-cart-hero.png';
 import { Link } from 'react-router-dom';
+import { ImSearch } from 'react-icons/im';
+import { HiOutlineScale } from 'react-icons/hi';
+import { RiHistoryLine } from 'react-icons/ri';
+import { BiStoreAlt } from 'react-icons/bi';
+import { HomeFeature } from '../components/HomeFeature';
 
 export const Home = () => {
 
@@ -24,7 +29,31 @@ export const Home = () => {
                     </div>
                 </div>
             </div>
-            <div>
+            <div className="container mx-auto mb-10">
+                <div className="sm:px-20 sm:pb-20 sm:pt-14 p-10 font-sans">
+                    <div className="grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 xl:px-10 lg:px-2 xl:gap-x-7 lg:gap-x-5 gap-x-10 gap-y-10">
+                        <HomeFeature
+                            icon={<ImSearch className="text-primary text-4xl" />}
+                            title="Meklē produktus pēc nosaukuma"
+                            description='Meklē produktus pēc nosaukuma, piemēram, "Piens", "Sviests Exporta", "Šokolādes saldējums"'
+                        />
+                        <HomeFeature
+                            icon={<BiStoreAlt className="text-primary text-5xl" />}
+                            title="Vairāku e-veikalu produkti"
+                            description='Meklētie produkti tiks attēloti no vairākiem Latvijas pārtikas e-veikaliem, piemēram, "Rimi", "Barbora", "Elvi", "Lidl" un citiem'
+                        />
+                        <HomeFeature
+                            icon={<RiHistoryLine className="text-primary text-5xl" />}
+                            title="Apskati produktu cenu vēsturi"
+                            description='Apskati katra produkta cenu vēsturi, lai uzzinātu vai produktam ir tendence kļūt lētākam vai dārgākam'
+                        />
+                        <HomeFeature
+                            icon={<HiOutlineScale className="text-primary text-5xl" />}
+                            title="Salīdzini produktu cenas"
+                            description='Salīdzini produktu cenas no vairākiem e-veikaliem, lai atrastu lētāko cenu vai izdevīgāko piedāvājumu'
+                        />
+                    </div>
+                </div>
             </div>
         </Page>
     );

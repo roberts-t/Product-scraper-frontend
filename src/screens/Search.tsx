@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Page } from '../components/Page';
 import ShoppingCart from '../assets/images/search-products.png';
 import ProductsNotFound from '../assets/images/search-notfound.png';
@@ -6,15 +6,27 @@ import { SearchForm } from '../components/forms/SearchForm';
 import { ProductCard } from '../components/ProductCard';
 import { CgSpinner } from 'react-icons/cg';
 import { Container } from '../components/Container';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { IState } from '../types';
 import { Slide, toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ProductSortDropdown } from '../components/dropdowns/ProductSortDropdown';
+import { Pagination } from '../components/Pagination';
+import { AppDispatch } from '../app/store';
+import { searchProducts } from '../features/products/productsSlice';
+import { HiOutlineRefresh } from 'react-icons/hi';
+import { InfoTooltip } from '../components/InfoTooltip';
 
+const PRODUCTS_PER_PAGE = 28;
 export const Search = () => {
 
-    const { productsSorted, isLoading, query, isSearched, errorMsg } = useSelector((state: IState) => state.products);
+    const dispatch = useDispatch<AppDispatch>();
+    const { productsSorted, updateAvailable, isLoading, query, isSearched, errorMsg } = useSelector((state: IState) => state.products);
+    const [page, setPage] = useState(1);
+
+    const resetPagination = () => {
+        setPage(1);
+    }
 
     useEffect(() => {
         if (errorMsg) {
@@ -40,7 +52,8 @@ export const Search = () => {
                 </div>
             )
         } else if (productsSorted.length >= 0) {
-            const productCards = productsSorted.map((product, i) => {
+            const productsSortedPaginated = productsSorted.slice((page - 1) * PRODUCTS_PER_PAGE, page * PRODUCTS_PER_PAGE);
+            const productCards = productsSortedPaginated.map((product, i) => {
                 return <ProductCard key={i} product={product} />
             });
             return (
@@ -51,8 +64,16 @@ export const Search = () => {
                     </div>
                     <div className="flex flex-row gap-x-5">
                         {productsSorted.length > 0 ?
-                            <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
-                                {productCards}
+                            <div>
+                                <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
+                                    {productCards}
+                                </div>
+                                <Pagination
+                                    productsPerPage={PRODUCTS_PER_PAGE}
+                                    totalProducts={productsSorted.length}
+                                    currentPage={page}
+                                    setCurrentPage={setPage}
+                                />
                             </div>
                             :
                             <div className="mx-auto mt-5 text-center">
@@ -78,15 +99,26 @@ export const Search = () => {
                     un citiem.
                 </p>
                 <div className="bg-white rounded-md shadow-sm lg:w-5/12 md:w-8/12 sm:w-10/12 w-full mt-3 flex p-5 border border-gray-200">
-                    <SearchForm />
+                    <SearchForm resetPagination={resetPagination} />
                 </div>
-                <div className="mt-3">
+                <div className="mt-3 flex sm:flex-row flex-col sm:space-x-8 space-y-5">
                     {productsSorted.length > 1 &&
                         <ProductSortDropdown />
                     }
+                    {updateAvailable && productsSorted.length > 1 &&
+                        <div className="mt-6 flex flex-row items-center sm:space-x-1.5 space-x-3">
+                            <button
+                                className="bg-primary px-4 py-2.5 rounded shadow transition hover:bg-primary/[0.8] text-white flex items-center justify-center"
+                                onClick={async () => await dispatch(searchProducts({query: query as string, updateProducts: true}))}
+                            >
+                                <HiOutlineRefresh className="inline-block text-xl mr-1" /> Atjaunot
+                            </button>
+                            <InfoTooltip text="Daži e-veikalu produkti var būt atjaunoti pirms ilgāka laika. Ja nepieciešams iegūt pēc iespējas jaunākus cenu datus, nospiediet pogu 'Atjaunot' (Ne visu e-veikalu produktus ir iespējams atjaunot)." />
+                        </div>
+                    }
                 </div>
             </Container>
-            <div className="bg-white flex-1">
+            <div className="bg-white flex-1 pb-10">
                 <Container className="py-10">
                     {renderProducts()}
                 </Container>
