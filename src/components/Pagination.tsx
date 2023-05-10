@@ -63,7 +63,7 @@ export const Pagination: React.FC<PaginationProps> = (props) => {
                 disabled={props.currentPage === totalPages}
                 className="disabled:text-gray-300 text-gray-500"
             >
-                <FiChevronRight className="text-gray-500 text-2xl ml-2" />
+                <FiChevronRight className="text-2xl ml-2" />
             </button>
             <button
                 onClick={() => props.setCurrentPage(totalPages)}

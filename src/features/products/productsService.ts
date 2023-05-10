@@ -46,13 +46,13 @@ export const sortProducts = (products: IProduct[], sortType: keyof IProductSortT
             return stringSimilarity.compareTwoStrings(b.name?.toLowerCase(), query) - stringSimilarity.compareTwoStrings(a.name?.toLowerCase(), query);
         });
     }
-
     else {
         return products;
     }
 }
 
 export const productSortTypes: IProductSortTypes = {
+    default: 'Noklusējuma kārtība',
     priceAsc: 'Cena (augošā secībā)',
     priceDesc: 'Cena (dilstošā secībā)',
     nameAsc: 'Nosaukums (augošā secībā)',

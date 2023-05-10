@@ -20,7 +20,7 @@ module.exports = {
                 'primary': '#1ba030',
                 'secondary': '#5bc369',
                 'tertiary': '#e9f4e6',
-                'highlight': '#fac647',
+                'highlight': '#ffc025',
                 'neutral': '#f3f2f8',
             },
             backgroundImage: {

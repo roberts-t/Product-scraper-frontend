@@ -11,7 +11,7 @@ const initialState: ProductsState = {
     isSearched: false,
     errorMsg: null,
     updateAvailable: false,
-    sortType: "priceAsc"
+    sortType: "default"
 }
 
 export const searchProducts = createAsyncThunk('products/searchProducts', async (searchData: IProductSearch, thunkAPI) => {
@@ -35,8 +35,9 @@ export const productsSlice = createSlice({
         resetProducts: () => initialState,
         changeProductSort: (state, action) => {
             const sortType = action.payload;
+            console.log("sortType", sortType);
             state.sortType = sortType;
-            state.productsSorted = productsService.sortProducts(state.products, sortType, state.query);
+            state.productsSorted = productsService.sortProducts([...state.products], sortType, state.query);
         }
     },
     extraReducers: (builder) => {
@@ -54,7 +55,7 @@ export const productsSlice = createSlice({
             state.isSearched = true;
             state.query = action.meta.arg.query;
             if (action.payload.products && Array.isArray(action.payload.products)) {
-                state.productsSorted = productsService.sortProducts([...action.payload.products], 'priceAsc', state.query);
+                state.productsSorted = [...action.payload.products];
             } else {
                 state.productsSorted = [];
             }

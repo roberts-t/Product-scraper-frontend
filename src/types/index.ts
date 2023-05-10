@@ -44,6 +44,7 @@ export interface IProduct {
 }
 
 export interface IProductSortTypes {
+    default: string
     priceAsc: string;
     priceDesc: string;
     nameAsc: string;

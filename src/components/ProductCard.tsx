@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 import 'moment/locale/lv';
 import { ProductHistoryModal } from './ProductHistoryModal';
+import { MdOutlineImageNotSupported } from 'react-icons/md';
 
 export const ProductCard: React.FC<ProductCardProps> = (props) => {
+    const [imgError, setImgError] = useState<boolean>(false);
+    const price = Number(props.product.price);
     moment().locale('lv');
 
     return (
@@ -12,7 +15,11 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                 <div className="px-3 py-2.5 mb-2 flex justify-between flex-row">
                     <a href={props.product.siteUrl} target="_blank" rel="noreferrer">
                         <div className="h-6">
-                            <img src={`${process.env.REACT_APP_API_ORIGIN}images/stores/${props.product.siteLogo}`} className="h-full" alt={props.product.site + " logo"} />
+                            <img
+                                src={`${process.env.REACT_APP_API_ORIGIN}images/stores/${props.product.siteLogo}`}
+                                className="h-full"
+                                alt={props.product.site + " logo"}
+                            />
                         </div>
                     </a>
                     <a href={props.product.siteUrl} target="_blank" rel="noreferrer">
@@ -23,7 +30,19 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                 </div>
                 <a href={props.product.url} target="_blank" rel="noreferrer">
                     <div className="h-32 mb-2 px-3">
-                        <img src={props.product.image} className="h-full mx-auto" alt={props.product.name} />
+                        {!imgError &&
+                            <img
+                                src={props.product.image}
+                                className="h-full mx-auto"
+                                alt={props.product.name}
+                                onError={() => setImgError(true)}
+                            />
+                        }
+                        {imgError &&
+                            <div className="h-full flex justify-center items-center">
+                                <MdOutlineImageNotSupported className="text-gray-400 text-7xl" />
+                            </div>
+                        }
                     </div>
                 </a>
                 <div className="flex flex-col justify-between flex-1 px-4">
@@ -44,15 +63,12 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                         </div>
                         <div className="flex flex-row justify-between">
                             {props.product.available ?
-                                <p className="text-primary font-bold font-montserrat text-2xl">{props.product.price}<span>€</span></p>
+                                <p className="text-primary font-bold font-montserrat text-2xl">{isNaN(price) ? "-" : price.toFixed(2)}<span>€</span></p>
                                 :
                                 <p className="text-red-500 font-semibold font-montserrat leading-none text-center my-auto">Šobrīd nav pieejams</p>
                             }
                             <ProductHistoryModal product={props.product} />
                         </div>
-                        {/*<a href={props.product.url} target="_blank" className={`${props.product.available ? 'bg-primary' : 'bg-red-400'} rounded p-2 w-fit`} rel="noreferrer">*/}
-                        {/*    <BiCart className="text-white text-xl" />*/}
-                        {/*</a>*/}
                     </div>
                 </div>
                 <div className="text-sm text-gray-400 px-3 pb-3">Atjaunots {moment(props.product.createdAt).fromNow()}</div>

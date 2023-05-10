@@ -15,7 +15,6 @@ export const ProductSortDropdown = () => {
     const dispatch = useDispatch<AppDispatch>();
 
     const handleChange = (value: string) => {
-        console.log("dispatching changeProductSort " + value);
         dispatch(changeProductSort(value));
     }
 

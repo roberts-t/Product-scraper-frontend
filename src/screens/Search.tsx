@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Page } from '../components/Page';
 import ShoppingCart from '../assets/images/search-products.png';
 import ProductsNotFound from '../assets/images/search-notfound.png';
@@ -23,6 +23,8 @@ export const Search = () => {
     const dispatch = useDispatch<AppDispatch>();
     const { productsSorted, updateAvailable, isLoading, query, isSearched, errorMsg } = useSelector((state: IState) => state.products);
     const [page, setPage] = useState(1);
+    const productContainer = useRef<HTMLDivElement | null>(null);
+    const didMountRef = useRef<boolean>(false);
 
     const resetPagination = () => {
         setPage(1);
@@ -33,6 +35,14 @@ export const Search = () => {
             toast.error("Notika kļūda, mēģiniet vēlreiz");
         }
     }, [errorMsg]);
+
+    useEffect(() => {
+        if (productContainer.current && didMountRef.current) {
+            productContainer.current.scrollIntoView({ block: "start", behavior: 'smooth' });
+        } else if (!didMountRef.current) {
+            didMountRef.current = true;
+        }
+    }, [page])
 
     const renderProducts = () => {
         if (!isSearched && !isLoading) {
@@ -54,7 +64,7 @@ export const Search = () => {
         } else if (productsSorted.length >= 0) {
             const productsSortedPaginated = productsSorted.slice((page - 1) * PRODUCTS_PER_PAGE, page * PRODUCTS_PER_PAGE);
             const productCards = productsSortedPaginated.map((product, i) => {
-                return <ProductCard key={i} product={product} />
+                return <ProductCard key={product.name + '-' + i} product={product} />
             });
             return (
                 <div>
@@ -108,7 +118,7 @@ export const Search = () => {
                     {updateAvailable && productsSorted.length > 1 &&
                         <div className="mt-6 flex flex-row items-center sm:space-x-1.5 space-x-3">
                             <button
-                                className="bg-primary px-4 py-2.5 rounded shadow transition hover:bg-primary/[0.8] text-white flex items-center justify-center"
+                                className="bg-highlight px-3 py-2 rounded shadow transition hover:bg-highlight/[0.8] text-white flex items-center justify-center"
                                 onClick={async () => await dispatch(searchProducts({query: query as string, updateProducts: true}))}
                             >
                                 <HiOutlineRefresh className="inline-block text-xl mr-1" /> Atjaunot
@@ -118,7 +128,7 @@ export const Search = () => {
                     }
                 </div>
             </Container>
-            <div className="bg-white flex-1 pb-10">
+            <div className="bg-white flex-1 pb-10" ref={productContainer}>
                 <Container className="py-10">
                     {renderProducts()}
                 </Container>
