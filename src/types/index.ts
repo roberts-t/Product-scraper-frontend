@@ -13,6 +13,8 @@ export interface ProductsState {
     updateAvailable: boolean;
     isSearched: boolean;
     errorMsg: string | null;
+    rateLimited: boolean;
+    rateLimitReset: number | null;
     sortType: keyof IProductSortTypes;
 }
 

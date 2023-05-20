@@ -13,7 +13,7 @@ const Footer = () => {
                 <div className="flex flex-row items-center gap-x-2">
                     <span>Roberts Turks @ 2023</span>
                     <div className="flex flex-row gap-x-2 mb-1">
-                        <a href="https://github.com/roberts-t" target="_blank" rel="noreferrer" className="text-white hover:text-gray-200 transition-colors duration-300">
+                        <a href="https://github.com/roberts-t" target="_blank" rel="noreferrer nofollow" className="text-white hover:text-gray-200 transition-colors duration-300">
                             <AiFillGithub className="text-2xl" />
                         </a>
                     </div>

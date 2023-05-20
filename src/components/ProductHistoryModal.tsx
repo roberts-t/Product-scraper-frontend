@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState } from 'react';
-import { requestPrivate } from '../utils/request';
+import { requestPublic } from '../utils/request';
 import { ProductChart } from './ProductChart';
 import { RiHistoryLine } from 'react-icons/ri';
 import { CgClose, CgSpinner } from 'react-icons/cg';
@@ -21,7 +21,7 @@ export const ProductHistoryModal: React.FC<ProductHistoryModalProps> = (props) =
         setIsChartLoading(true);
         setIsOpen(true);
 
-        requestPrivate.post('/product/history', {
+        requestPublic.post('/product/history', {
             productUrl: props.product.url
         }).then((res) => {
             setProductHistory(res.data);

@@ -13,9 +13,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ProductSortDropdown } from '../components/dropdowns/ProductSortDropdown';
 import { Pagination } from '../components/Pagination';
 import { AppDispatch } from '../app/store';
-import { searchProducts } from '../features/products/productsSlice';
+import { searchProducts, resetProducts } from '../features/products/productsSlice';
 import { HiOutlineRefresh } from 'react-icons/hi';
 import { InfoTooltip } from '../components/InfoTooltip';
+import ReactGA from 'react-ga';
 
 const PRODUCTS_PER_PAGE = 28;
 export const Search = () => {
@@ -31,10 +32,17 @@ export const Search = () => {
     }
 
     useEffect(() => {
+        ReactGA.pageview("/search");
+    }, []);
+
+    useEffect(() => {
         if (errorMsg) {
             toast.error("Notika kļūda, mēģiniet vēlreiz");
         }
-    }, [errorMsg]);
+        return () => {
+            dispatch(resetProducts());
+        }
+    }, [errorMsg, dispatch]);
 
     useEffect(() => {
         if (productContainer.current && didMountRef.current) {

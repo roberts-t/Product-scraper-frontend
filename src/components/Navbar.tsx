@@ -4,11 +4,13 @@ import { Container } from './Container';
 import { Link, useNavigate } from 'react-router-dom';
 import { BiLogOut } from 'react-icons/bi';
 import { logout } from '../features/auth/authSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../app/store';
+import { IState } from '../types';
 
 export const Navbar = () => {
 
+    const { accessToken } = useSelector((state: IState) => state.auth);
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
 
@@ -22,10 +24,12 @@ export const Navbar = () => {
             <Container>
                 <div className="flex flex-row justify-between items-center">
                     <div className="flex flex-row">
-                        <div className="flex flex-row items-center gap-x-2">
-                            <Logo className="h-10 w-auto fill-primary" />
-                            <p className="font-bold font-rubik text-2xl text-primary mt-1">AtrodiLētāk</p>
-                        </div>
+                        <Link to="/">
+                            <div className="flex flex-row items-center gap-x-2">
+                                <Logo className="h-10 w-auto fill-primary" />
+                                <p className="font-bold font-rubik text-2xl text-primary mt-1">AtrodiLētāk</p>
+                            </div>
+                        </Link>
                         <div className="ml-14 sm:block hidden">
                             <ul className="space-x-10 text-slate-700 flex flex-row items-center h-full">
                                 <li>
@@ -46,13 +50,15 @@ export const Navbar = () => {
                         </div>
                     </div>
                     <div>
-                        <button
-                            onClick={handleLogout}
-                            type="button"
-                            className="flex flex-row items-center gap-x-1 text-slate-700"
-                        >
-                            <BiLogOut className="inline-block text-lg" /> Iziet
-                        </button>
+                        {accessToken &&
+                            <button
+                                onClick={handleLogout}
+                                type="button"
+                                className="flex flex-row items-center gap-x-1 text-slate-700"
+                            >
+                                <BiLogOut className="inline-block text-lg" /> Iziet
+                            </button>
+                        }
                     </div>
                 </div>
             </Container>

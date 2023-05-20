@@ -13,7 +13,7 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
         <div className="border-2 border-primary rounded shadow">
             <div className="flex flex-col h-full">
                 <div className="px-3 py-2.5 mb-2 flex justify-between flex-row">
-                    <a href={props.product.siteUrl} target="_blank" rel="noreferrer">
+                    <a href={props.product.siteUrl} target="_blank" rel="noreferrer nofollow" >
                         <div className="h-6">
                             <img
                                 src={`${process.env.REACT_APP_API_ORIGIN}images/stores/${props.product.siteLogo}`}
@@ -22,13 +22,13 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                             />
                         </div>
                     </a>
-                    <a href={props.product.siteUrl} target="_blank" rel="noreferrer">
+                    <a href={props.product.siteUrl} target="_blank" rel="noreferrer nofollow">
                         <div className="bg-primary text-white py-0.5 font-semibold px-3 rounded text-sm">
                             {props.product.siteName}
                         </div>
                     </a>
                 </div>
-                <a href={props.product.url} target="_blank" rel="noreferrer">
+                <a href={props.product.url} target="_blank" rel="noreferrer nofollow">
                     <div className="h-32 mb-2 px-3">
                         {!imgError &&
                             <img
@@ -46,7 +46,7 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                     </div>
                 </a>
                 <div className="flex flex-col justify-between flex-1 px-4">
-                    <a href={props.product.url} target="_blank" rel="noreferrer">
+                    <a href={props.product.url} target="_blank" rel="noreferrer nofollow">
                         <p className="font-medium text-center font-montserrat font-semibold ">{props.product.name}</p>
                     </a>
                     <div className="mt-3">

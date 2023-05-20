@@ -24,7 +24,7 @@ export const Home = () => {
                             </Link>
                         </div>
                         <div className="flex items-center justify-center lg:order-2 order-1 lg:mb-0 mb-5">
-                            <img className="lg:w-9/12 sm:w-4/6 h-auto" src={shoppingCartHero} alt="shopping cart" />
+                            <img className="lg:w-9/12 sm:w-4/6 h-auto" src={shoppingCartHero} alt="Shopping cart with products" />
                         </div>
                     </div>
                 </div>
