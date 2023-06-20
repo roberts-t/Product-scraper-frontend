@@ -10,8 +10,9 @@ export const ProductHistoryModal: React.FC<ProductHistoryModalProps> = (props) =
     let [isOpen, setIsOpen] = useState(false);
     const [productHistory, setProductHistory] = useState<any[]>([]);
     const [isChartLoading, setIsChartLoading] = useState<boolean>(false);
-    const maxPrice = Math.max(...productHistory.map((item) => item.price)).toFixed(2);
-    const minPrice = Math.min(...productHistory.map((item) => item.price)).toFixed(2);
+    const validPriceHistory = productHistory.filter((item) => !isNaN(item.price));
+    const maxPrice = Math.max(...validPriceHistory.map((item) => item.price)).toFixed(2);
+    const minPrice = Math.min(...validPriceHistory.map((item) => item.price)).toFixed(2);
 
     function closeModal() {
         setIsOpen(false)
@@ -68,7 +69,7 @@ export const ProductHistoryModal: React.FC<ProductHistoryModalProps> = (props) =
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-md bg-white p-6 text-left align-middle shadow-xl transition-all">
+                                <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-md bg-white sm:p-6 p-4 text-left align-middle shadow-xl transition-all">
                                     <div className="absolute top-2 right-3 p-1.5">
                                         <CgClose className="text-gray-400 text-2xl cursor-pointer" onClick={closeModal} />
                                     </div>
@@ -94,17 +95,17 @@ export const ProductHistoryModal: React.FC<ProductHistoryModalProps> = (props) =
                                     }
                                     {productHistory.length > 0 && !isChartLoading &&
                                         <>
-                                            <div className="my-4 flex flex-row justify-around">
+                                            <div className="my-4 flex flex-row justify-around gap-x-2 text-center">
                                                 <div>
-                                                    <p className="text-gray-500">Zemākā cena</p>
+                                                    <p className="text-gray-500 sm:text-base text-sm">Zemākā cena</p>
                                                     <span className="block font-bold text-lg text-primary">{minPrice}€</span>
                                                 </div>
                                                 <div>
-                                                    <p className="text-gray-500">Augstākā cena</p>
+                                                    <p className="text-gray-500 sm:text-base text-sm">Augstākā cena</p>
                                                     <span className="block font-bold text-lg text-primary">{maxPrice}€</span>
                                                 </div>
                                                 <div>
-                                                    <p className="text-gray-500">Cena šobrīd</p>
+                                                    <p className="text-gray-500 sm:text-base text-sm">Cena šobrīd</p>
                                                     <span className="block font-bold text-lg text-primary">{props.product.price}€</span>
                                                 </div>
                                             </div>

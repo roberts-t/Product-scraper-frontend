@@ -55,10 +55,13 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                                 <p>Cena spēkā: {props.product.dealDuration}</p>
                             }
                             {props.product.manufacturer &&
-                                <p>Ražotājs: {props.product.manufacturer}</p>
+                                <p>Ražotājs: {props.product.manufacturer.split(',')[0]}</p>
                             }
                             {props.product.country &&
                                 <p>Ražots: {props.product.country}</p>
+                            }
+                            {props.product.brand &&
+                                <p>Zīmols: {props.product.brand}</p>
                             }
                         </div>
                         <div className="flex flex-row justify-between">
@@ -72,6 +75,14 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
                     </div>
                 </div>
                 <div className="text-sm text-gray-400 px-3 pb-3">Atjaunots {moment(props.product.createdAt).fromNow()}</div>
+                { props.product.totalScore &&
+                    <div className="text-xs px-3 flex flex-col py-2 bg-blue-200">
+                        <span>Total: {props.product.totalScore}</span>
+                        <span>Fuzzy: {props.product.score}</span>
+                        <span>Price: {props.product.priceScore}</span>
+                        <span>Token score: {props.product.tokenizedScore}</span>
+                    </div>
+                }
             </div>
         </div>
     );
